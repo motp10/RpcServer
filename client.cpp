@@ -27,15 +27,15 @@ public:
         std::thread writer_thread([stream]() {
             MessegeToVtep server_msg;
             while (stream->Read(&server_msg)) {
-                std::cout << "\n Получено обновление: "
+                std::cout << "\n update: "
                           << server_msg.operation_result() << std::endl
                           << "VNI: " << server_msg.vni() 
                           << " MAC: " << server_msg.mac_address() << std::endl;
             }
-            std::cout << "Поток чтения закрыт сервером." << std::endl;
+            std::cout << "stream closed." << std::endl;
         });
 
-        std::cout << "Введите VNI и MAC (через пробел) или 0 0 для выхода:" << std::endl;
+        std::cout << "Mac VNI" << std::endl;
         uint32_t vni, mac;
         std::string command;
         while (std::cin >> command >> vni >> mac && (vni != 0 || mac != 0)) {
@@ -45,7 +45,7 @@ public:
             msg.set_mac_address(mac);
             msg.set_ip_address(ip_);
             if (!stream->Write(msg)) {
-                std::cerr << "Ошибка записи в поток!" << std::endl;
+                std::cerr << "stream writing error" << std::endl;
                 break;
             }
         }
@@ -55,7 +55,7 @@ public:
         Status status = stream->Finish();
 
         if (!status.ok()) {
-            std::cerr << "RPC завершился с ошибкой: " << status.error_message() << std::endl;
+            std::cerr << "RPC closed with error " << status.error_message() << std::endl;
         }
     }
 

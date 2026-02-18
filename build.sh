@@ -3,6 +3,3 @@ mkdir build
 cd build
 cmake ..
 make
-cd build
-./my_app
-cd ..
