@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+message MacInfo {
+    string hostname = 1;
+    uint32 ip_address = 2;
+    uint32 vni = 3;
+    uint32 mac_address = 4;
+    string operation = 5;
+}
+
+message MessegeToVtep {
+    uint32 ip_address = 2;
+    uint32 vni = 3;
+    uint32 mac_address = 4;
+    string operation_result = 5;
+}
+
+service FdbServiceProto {
+    rpc Execute(stream MacInfo) returns (stream MessegeToVtep);
+}
+
